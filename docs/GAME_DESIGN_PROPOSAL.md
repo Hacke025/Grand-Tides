@@ -111,9 +111,9 @@ The current game is single-player. Reliable shared combat and movement will requ
 ### Phase 1 — First complete island
 - [ ] Polished movement, camera, and controls
 - [ ] Character model and animation pass
-- [ ] Combat combos, dodge, block, and hit reactions
-- [ ] Distinct enemy types and named encounter
-- [ ] Main story chapter with a satisfying conclusion
+- [x] Combat combos, dodge, block, and hit reactions
+- [x] Distinct enemy types and named encounter
+- [x] Main story chapter with a satisfying conclusion
 - [ ] Side quests and environmental puzzles
 - [ ] Treasure hunts and hidden locations
 - [ ] First-island balance and browser testing
@@ -127,8 +127,8 @@ The current game is single-player. Reliable shared combat and movement will requ
 - [ ] Dynamic weather and ocean discoveries
 
 ### Phase 3 — RPG progression
-- [ ] Levels, stats, and character builds
-- [ ] Ancient Relic discovery and mastery
+- [x] Levels, stats, and character builds
+- [ ] Ancient Relic discovery and mastery (3 of 6 relics in; Void, Astral, and mastery trees remain)
 - [ ] Origins and traits
 - [ ] Equipment, crafting, and cosmetics
 - [ ] Expanded quest arcs
@@ -152,15 +152,18 @@ The current game is single-player. Reliable shared combat and movement will requ
 |---|---|
 | 3D Shattered Coast island | Prototype |
 | Player movement and camera | Implemented |
-| Light/heavy combat | Prototype |
+| Light/heavy combat, 3-hit combo, guard, dodge frames | Implemented |
 | Gale Step and Tide Burst | Prototype |
-| Coast raider AI | Prototype |
+| Enemy AI: raiders, reef brutes, telegraphed attacks, leashing | Implemented |
+| Boss: Captain Brinejaw (ground slam) | Implemented |
 | Treasure chests | Implemented |
 | Tide Wisp collectibles | Implemented |
 | Old Mariner and beacon story | Started |
 | Shipwreck / Lost Sea Chart side discovery | Prototype |
 | Multiple islands and sailing | Planned |
-| Stats, origins, Ancient Relic mastery | Planned |
+| Levels, stat points, saved progress (localStorage) | Implemented |
+| Ancient Relics: Ember, Storm, Verdant | Implemented |
+| Origins and Relic mastery | Planned |
 | Multiplayer and crews | Planned |
 
 ## Rules for future decisions

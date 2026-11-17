@@ -8,18 +8,19 @@ https://hacke025.github.io/Grand-Tides/
 
 ## Current prototype
 
-- Third-person 3D island exploration rendered with Three.js.
-- Character movement, mouse-drag camera, jumping, sprinting, and a sword model.
-- Light and heavy melee attacks with slash arcs, hit sparks, and impact feedback.
-- **Gale Step** mobility burst and **Tide Burst** area attack with stylized energy VFX.
-- Roaming coast raiders that pursue and attack when approached.
-- Random treasure chests placed around the island; opening one grants 18–55 coins. Chests respawn over time.
-- Story NPC, dialogue, ancient beacon, quest tracker, health, coins, and renown HUD.
-- Animated birds, swaying trees, floating treasure chests, warm lanterns, a flickering campfire, coastal rocks, grass tufts, and atmospheric lighting.
-- Optional **Tide Wisp** collectibles hidden around the island; each grants coins and renown.
-- A hidden shipwreck and **Lost Sea Chart** side discovery, rewarding 65 coins and 15 renown.
-- Defeated raiders return after a while, keeping the coast lively without requiring constant grinding.
-- Camera rotation uses the right mouse button so left-click attacks no longer accidentally drag the camera.
+- Third-person 3D island exploration rendered with Three.js, with saved progress.
+- Light attacks chain into a 3-hit **combo finisher**; heavy strikes cleave; **Guard** (hold V) cuts damage; **Gale Step** is a real dodge with brief invulnerability.
+- **Levels, XP, and stat points** (Vitality, Strength, Mastery, Stamina, Agility). XP comes from discoveries, quests, chests, and fights, so no single activity is required. Press **C** for the character panel.
+- **Ancient Relics**, original supernatural abilities found through exploration:
+  - **Ember Relic**: flame cone with burn damage. Dropped by the boss.
+  - **Storm Relic**: chain lightning. Awakens when all five Tide Wisps are found.
+  - **Verdant Relic**: heal plus thorns. Hidden in a grove revealed by the Lost Sea Chart.
+- Three enemy types with **telegraphed attacks**, territory, health bars, and leashing: Coast Raiders, Reef Brutes (one guards the shipwreck), and the boss **Captain Brinejaw**, whose ground slam shows a red warning circle.
+- Main story: *A Light in the Mist* continues into *The Captain's Grudge*.
+- Out-of-combat health regeneration; defeated enemies return over time, so there is nothing to farm.
+- Random treasure chests, optional **Tide Wisp** collectibles, a hidden shipwreck with the **Lost Sea Chart**, and a discoveries tracker in the quest panel.
+- Animated birds, swaying trees, lanterns, a campfire, and atmospheric lighting.
+- Progress (level, stats, coins, relics, story stage, discoveries) saves to your browser automatically.
 
 ## Controls
 
@@ -34,6 +35,12 @@ https://hacke025.github.io/Grand-Tides/
 | Q | Gale Step |
 | R | Tide Burst (3.5-second cooldown) |
 | E | Interact / open chest / continue dialogue |
+| V (hold) | Guard (reduces damage by 65%) |
+| Z | Use equipped Ancient Relic |
+| X | Cycle equipped relic |
+| C | Character panel (or press 1-5 to spend stat points while it is open) |
+
+Gale Step (Q) grants a short window of invulnerability, so use it to dodge the boss's slam.
 
 ## Run locally
 
