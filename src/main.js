@@ -1,62 +1,21 @@
 import * as THREE from "three";
-import { createWorld } from "./world.js";
-import { createPlayer } from "./player.js";
-import { createQuestSystem } from "./quests.js";
-import { createUI } from "./ui.js";
-
-const canvas=document.querySelector("#world-canvas");
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth,innerHeight);
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.1;
-
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x87b7c4);
-scene.fog=new THREE.Fog(0x87b7c4,65,180);
-const camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,300);
-const hemi=new THREE.HemisphereLight(0xc9e7ef,0x536c4a,2.0);scene.add(hemi);
-const sun=new THREE.DirectionalLight(0xffe4bd,2.6);sun.position.set(-35,55,25);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-60;sun.shadow.camera.right=60;sun.shadow.camera.top=60;sun.shadow.camera.bottom=-60;scene.add(sun);
-
-const world=createWorld(THREE,scene);
-const player=createPlayer(THREE,scene,camera,canvas);
-const ui=createUI();
-const quests=createQuestSystem({ui,onReward:()=>{ui.setStats({coins:100,renown:25});}});
-let started=false,dialogueOpen=false,nearby=null,lastTime=0;
-const keys={};
-window.addEventListener("keydown",e=>{keys[e.code]=true;if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();if(!started)return;
- if(e.code==="KeyE"){if(dialogueOpen){advanceDialogue();}else if(nearby){interact(nearby);}}
- if(e.code==="KeyQ")player.galeStep();
- if(e.code==="KeyR")world.tidePulse(player.position());
-});
-window.addEventListener("keyup",e=>keys[e.code]=false);
-function showDialogue(speaker,role,lines,onDone){dialogueOpen=true;ui.showDialogue(speaker,role,lines,onDone);}
-function advanceDialogue(){const done=ui.nextDialogue();if(done)dialogueOpen=false;}
-ui.onDialogueNext=advanceDialogue;
-function interact(target){
- if(target.type==="mariner"){
-  const result=quests.talkToMariner();
-  showDialogue("Old Mariner","KEEPER OF THE HARBOR",result.lines,()=>{quests.finishDialogue(result);});
- }else if(target.type==="beacon"){
-  const result=quests.inspectBeacon();
-  showDialogue("Ancient Beacon","A STRANGE MECHANISM",result.lines,()=>{quests.finishDialogue(result);});
- }
-}
-function updateNearby(){
- const p=player.position();let nearest=null,dist=3.2;
- for(const target of world.interactables){const d=p.distanceTo(target.object.position);if(d<dist){nearest=target;dist=d;}}
- nearby=nearest;ui.setInteraction(nearest?nearest.label:null);
-}
-function animate(time){
- requestAnimationFrame(animate);
- const dt=Math.min((time-lastTime)/1000||0,.04);lastTime=time;
- if(started){player.update(dt,keys);updateNearby();world.update(dt);}
- renderer.render(scene,camera);
-}
-requestAnimationFrame(animate);
-ui.onStart=()=>{started=true;ui.hideStart();player.enable();};
-window.addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));});
-document.querySelector("#loading").hidden=true;
+import {createWorld} from "./world.js";import {createPlayer} from "./player.js";import {createQuestSystem} from "./quests.js";import {createUI} from "./ui.js";
+const canvas=document.querySelector("#world-canvas"),renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x87b7c4);scene.fog=new THREE.Fog(0x87b7c4,65,180);const camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,300);
+scene.add(new THREE.HemisphereLight(0xc9e7ef,0x536c4a,2));const sun=new THREE.DirectionalLight(0xffe4bd,2.6);sun.position.set(-35,55,25);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-60;sun.shadow.camera.right=60;sun.shadow.camera.top=60;sun.shadow.camera.bottom=-60;scene.add(sun);
+const ui=createUI(),world=createWorld(THREE,scene),player=createPlayer(THREE,scene,camera,canvas);let coins=0,renown=0,health=100,started=false,dialogueOpen=false,nearby=null,lastTime=0,lightCD=0,heavyCD=0,pulseCD=0;
+const quests=createQuestSystem({ui,onReward:()=>{coins+=100;renown+=25;ui.setStats({coins,renown,health});}}),keys={};
+function showDialogue(speaker,role,lines,done){dialogueOpen=true;ui.showDialogue(speaker,role,lines,done);}
+function advanceDialogue(){if(ui.nextDialogue())dialogueOpen=false;}ui.onDialogueNext=advanceDialogue;
+function interact(t){if(t.type==="mariner"||t.type==="beacon"){const result=t.type==="mariner"?quests.talkToMariner():quests.inspectBeacon();showDialogue(t.type==="mariner"?"Old Mariner":"Ancient Beacon",t.type==="mariner"?"KEEPER OF THE HARBOR":"A STRANGE MECHANISM",result.lines,()=>quests.finishDialogue(result));}
+else if(t.type==="chest"){const amount=world.openChest(t);if(amount){coins+=amount;ui.setStats({coins,renown,health});ui.toast("TREASURE FOUND  ·  +"+amount+" COINS");}}}
+function updateNearby(){const p=player.position();let nearest=null,dist=3.5;for(const t of world.interactables){if(!t.object.visible)continue;const d=p.distanceTo(t.object.position);if(d<dist){nearest=t;dist=d;}}nearby=nearest;ui.setInteraction(nearest?(nearest.type==="chest"?"OPEN TREASURE CHEST":nearest.label):null);}
+function rewardDefeat(){coins+=12;renown+=2;ui.setStats({coins,renown,health});ui.toast("RIVAL DEFEATED  ·  +12 COINS");}
+function lightAttack(){if(!started||dialogueOpen||lightCD>0)return;lightCD=.38;player.swing();const hit=world.attack(player.position(),player.forward(),10,3.3);if(hit){ui.damageNumber(hit.damage);if(hit.defeated)rewardDefeat();}}
+function heavyAttack(){if(!started||dialogueOpen||heavyCD>0)return;heavyCD=1.25;player.heavySwing();const hit=world.attack(player.position(),player.forward(),24,4.8);ui.damageNumber(hit?.damage||0);if(hit?.defeated)rewardDefeat();else ui.toast(hit?"HEAVY STRIKE":"HEAVY STRIKE · MISSED");}
+function takeDamage(amount){health=Math.max(0,health-amount);ui.setStats({coins,renown,health});ui.damageNumber(amount,true);if(!health){health=100;coins=Math.max(0,coins-10);player.respawn();ui.setStats({coins,renown,health});ui.toast("RESCUED AT THE HARBOR · -10 COINS");}}
+window.addEventListener("keydown",e=>{keys[e.code]=true;if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();if(!started)return;if(e.code==="KeyE"){if(dialogueOpen)advanceDialogue();else if(nearby)interact(nearby);}if(e.code==="KeyF")heavyAttack();if(e.code==="KeyQ"&&!dialogueOpen){player.galeStep();world.galeVfx(player.position(),player.forward());}if(e.code==="KeyR"&&!dialogueOpen&&pulseCD<=0){pulseCD=3.5;player.castPulse();const count=world.tidePulse(player.position());if(count)ui.toast("TIDE BURST · "+count+" RIVALS HIT");}});
+window.addEventListener("keyup",e=>keys[e.code]=false);canvas.addEventListener("pointerdown",e=>{if(e.button===0&&started)lightAttack();});
+function animate(time){requestAnimationFrame(animate);const dt=Math.min((time-lastTime)/1000||0,.04);lastTime=time;lightCD=Math.max(0,lightCD-dt);heavyCD=Math.max(0,heavyCD-dt);pulseCD=Math.max(0,pulseCD-dt);if(started){player.update(dt,keys);updateNearby();world.update(dt,player.position(),takeDamage);}renderer.render(scene,camera);}requestAnimationFrame(animate);
+ui.onStart=()=>{started=true;ui.hideStart();player.enable();};window.addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));});document.querySelector("#loading").hidden=true;
