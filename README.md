@@ -15,7 +15,10 @@ https://hacke025.github.io/Grand-Tides/
 - Roaming coast raiders that pursue and attack when approached.
 - Random treasure chests placed around the island; opening one grants 18–55 coins. Chests respawn over time.
 - Story NPC, dialogue, ancient beacon, quest tracker, health, coins, and renown HUD.
-- Animated birds, swaying trees, floating treasure chests, and atmospheric lighting.
+- Animated birds, swaying trees, floating treasure chests, warm lanterns, a flickering campfire, coastal rocks, grass tufts, and atmospheric lighting.
+- Optional **Tide Wisp** collectibles hidden around the island; each grants coins and renown.
+- Defeated raiders return after a while, keeping the coast lively without requiring constant grinding.
+- Camera rotation uses the right mouse button so left-click attacks no longer accidentally drag the camera.
 
 ## Controls
 
