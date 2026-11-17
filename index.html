@@ -2,36 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grand Tides</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071b2b">
+  <title>Grand Tides — The Shattered Coast</title>
   <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
+  </script>
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar"><a class="brand" href="./">GRAND <span>TIDES</span></a><span class="top-note">A pirate roguelike adventure</span></header>
-    <section class="hero">
-      <div class="eyebrow">THE OPEN SEA IS CALLING</div>
-      <h1>Make your name among the <em>Grand Tides.</em></h1>
-      <p>Explore strange islands, face unexpected challenges, uncover treasure, and build your legend one voyage at a time.</p>
-      <button id="begin-button" class="primary-button">Begin your voyage →</button>
-      <div class="hero-meta">SOLO ADVENTURE · ROGUELIKE VOYAGES · LOCAL SAVES</div>
-    </section>
-    <section id="game" class="game-panel" hidden>
-      <div class="panel-heading"><div><div class="eyebrow">CAPTAIN'S LOG</div><h2>Your voyage</h2></div><button id="reset-button" class="quiet-button">New voyage</button></div>
-      <div class="stats">
-        <div><small>LEVEL</small><strong id="level">1</strong></div>
-        <div><small>HEALTH</small><strong id="health">30 / 30</strong></div>
-        <div><small>GOLD</small><strong id="gold">0</strong></div>
-        <div><small>RENOWN</small><strong id="renown">0</strong></div>
+  <div id="game-root">
+    <canvas id="world-canvas" aria-label="3D game world"></canvas>
+    <div class="vignette"></div>
+    <header class="top-hud">
+      <a class="brand" href="./">GRAND <span>TIDES</span></a>
+      <div class="location"><span class="location-dot"></span><span id="location-name">THE SHATTERED COAST</span></div>
+      <div class="profile"><span class="profile-icon">✦</span><span>VOYAGER</span><strong id="level-label">LV. 1</strong></div>
+    </header>
+    <aside class="quest-panel">
+      <div class="panel-kicker">CURRENT TALE <span>01</span></div>
+      <h2 id="quest-title">A Light in the Mist</h2>
+      <p id="quest-description">Find the old mariner near the harbor.</p>
+      <div class="quest-progress"><span id="quest-progress"></span></div>
+      <div class="quest-status" id="quest-status">MAIN STORY</div>
+    </aside>
+    <div class="bottom-left">
+      <div class="status-card"><div class="status-top"><span>VITALITY</span><strong id="health-value">100 / 100</strong></div><div class="health-track"><span id="health-fill"></span></div><div class="status-bottom"><span>✦ <b id="renown-value">0</b> RENOWN</span><span>◈ <b id="coin-value">0</b> COINS</span></div></div>
+    </div>
+    <div class="bottom-center">
+      <div class="ability-bar">
+        <div class="ability"><kbd>Q</kbd><span class="ability-symbol">➤</span><small>GALE STEP</small></div>
+        <div class="ability"><kbd>R</kbd><span class="ability-symbol">◉</span><small>TIDE PULSE</small></div>
+        <div class="ability muted"><kbd>E</kbd><span class="ability-symbol">✧</span><small>INTERACT</small></div>
       </div>
-      <div class="voyage-layout">
-        <section class="island-card"><div class="eyebrow">CHART YOUR COURSE</div><h3 id="island-name">Driftwood Harbor</h3><p id="island-description">A quiet port where new captains begin.</p><div class="island-art">⚓</div><button id="explore-button" class="primary-button">Explore island →</button></section>
-        <section class="log-card"><div class="eyebrow">SHIP'S JOURNAL</div><div id="journal" class="journal">Your story begins at Driftwood Harbor.</div></section>
+    </div>
+    <div class="bottom-right"><div class="control-hint">WASD <span>MOVE</span><i></i> MOUSE <span>LOOK</span><i></i> SPACE <span>JUMP</span></div></div>
+    <div id="interaction-prompt" class="interaction-prompt" hidden><kbd>E</kbd><span>INTERACT</span></div>
+    <div id="dialogue" class="dialogue" hidden>
+      <div class="dialogue-heading"><span class="dialogue-mark">✦</span><div><small id="speaker-role">HARBOR RESIDENT</small><h3 id="speaker-name">Old Mariner</h3></div><span class="dialogue-hint">E / CLICK TO CONTINUE</span></div>
+      <p id="dialogue-text"></p>
+      <button id="dialogue-next">CONTINUE <span>→</span></button>
+    </div>
+    <div id="toast" class="toast" hidden></div>
+    <section id="start-screen" class="start-screen">
+      <div class="start-card">
+        <div class="start-eyebrow">A NEW WORLD AWAITS</div>
+        <div class="start-logo">GRAND<br><em>TIDES</em></div>
+        <p>An unexplored coast. A forgotten signal.<br>Your story begins beyond the harbor.</p>
+        <button id="start-button">STEP INTO THE WORLD <span>→</span></button>
+        <div class="start-foot">3D EXPLORATION PROTOTYPE <span>·</span> CHAPTER ONE</div>
       </div>
-      <section id="encounter" class="encounter" hidden><div class="eyebrow">ENCOUNTER</div><h3 id="encounter-title"></h3><p id="encounter-text"></p><div id="encounter-actions" class="actions"></div></section>
     </section>
-    <footer>GRAND TIDES · EVERY VOYAGE WRITES A NEW STORY</footer>
-  </main>
-  <script src="game.js"></script>
+    <div id="loading" class="loading">CHARTING THE COAST...</div>
+  </div>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
