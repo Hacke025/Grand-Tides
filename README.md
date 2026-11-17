@@ -1,23 +1,21 @@
 # Grand Tides
 
-**Grand Tides** is an original 3D, story-first pirate adventure prototype. Explore the Shattered Coast, meet its residents, discover mysterious landmarks, and unlock the secrets of a much larger world.
-
-This project takes broad inspiration from open-world anime pirate RPGs, while creating its own setting, characters, story, and powers.
+**Grand Tides** is an original 3D, story-first pirate adventure prototype. Explore the Shattered Coast, meet its residents, fight coast raiders, and search the island for treasure.
 
 ## Play
-
-After GitHub Pages is enabled, the game will be available at:
 
 https://hacke025.github.io/Grand-Tides/
 
 ## Current prototype
 
-- Real-time 3D island environment rendered with Three.js.
-- Third-person character movement with WASD, mouse-drag camera, jumping, and sprinting.
-- First story quest: **A Light in the Mist**.
-- NPC dialogue and proximity-based interaction.
-- Two starter abilities: **Gale Step** (mobility burst) and **Tide Pulse** (a visual energy pulse).
-- Responsive HUD, quest tracker, status display, and ability bar.
+- Third-person 3D island exploration rendered with Three.js.
+- Character movement, mouse-drag camera, jumping, sprinting, and a sword model.
+- Light and heavy melee attacks with slash arcs, hit sparks, and impact feedback.
+- **Gale Step** mobility burst and **Tide Burst** area attack with stylized energy VFX.
+- Roaming coast raiders that pursue and attack when approached.
+- Random treasure chests placed around the island; opening one grants 18–55 coins. Chests respawn over time.
+- Story NPC, dialogue, ancient beacon, quest tracker, health, coins, and renown HUD.
+- Animated birds, swaying trees, floating treasure chests, and atmospheric lighting.
 
 ## Controls
 
@@ -27,9 +25,11 @@ https://hacke025.github.io/Grand-Tides/
 | Mouse drag | Rotate camera |
 | Space | Jump |
 | Shift | Sprint |
-| E | Interact / continue dialogue |
+| Left mouse button | Light sword attack |
+| F | Heavy sword strike |
 | Q | Gale Step |
-| R | Tide Pulse |
+| R | Tide Burst (3.5-second cooldown) |
+| E | Interact / open chest / continue dialogue |
 
 ## Run locally
 
@@ -39,17 +39,14 @@ Three.js is loaded from jsDelivr; no build step is required.
 
 ## Multiplayer-ready direction
 
-The current prototype is intentionally single-player, but its systems are separated into world, player, quest, and UI modules. A later multiplayer phase can add Supabase Auth and Postgres for accounts and saved character data, with Supabase Realtime for presence and lightweight world events. A dedicated authoritative game server may be needed later for synchronized movement and gameplay validation; browser clients should never be trusted to decide important shared game state.
+The current prototype is intentionally single-player. Its systems are separated into world, player, quest, and UI modules. A later multiplayer phase can add Supabase Auth and Postgres for accounts and saved character data, with Supabase Realtime for presence and lightweight world events. A dedicated authoritative game server may be needed for synchronized movement and gameplay validation; browser clients should not be trusted to decide important shared game state.
 
-The static GitHub Pages build can remain the web client while Supabase supplies the backend.
+GitHub Pages can remain the web client while Supabase supplies backend services.
 
 ## Technology
 
-- HTML / CSS / JavaScript modules
-- Three.js
-- GitHub Pages (static hosting)
-- Future backend option: Supabase
+HTML · CSS · JavaScript modules · Three.js · GitHub Pages · Future backend option: Supabase
 
-## Project principle
+## Design principle
 
 Progression should come from discoveries, choices, characters, and story milestones—not repetitive enemy farming.
