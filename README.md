@@ -17,6 +17,7 @@ https://hacke025.github.io/Grand-Tides/
 - Story NPC, dialogue, ancient beacon, quest tracker, health, coins, and renown HUD.
 - Animated birds, swaying trees, floating treasure chests, warm lanterns, a flickering campfire, coastal rocks, grass tufts, and atmospheric lighting.
 - Optional **Tide Wisp** collectibles hidden around the island; each grants coins and renown.
+- A hidden shipwreck and **Lost Sea Chart** side discovery, rewarding 65 coins and 15 renown.
 - Defeated raiders return after a while, keeping the coast lively without requiring constant grinding.
 - Camera rotation uses the right mouse button so left-click attacks no longer accidentally drag the camera.
 
@@ -39,6 +40,10 @@ https://hacke025.github.io/Grand-Tides/
 Because the game uses JavaScript modules, run it through a local static web server rather than opening the HTML file directly. For example, use the Live Server extension in VS Code, or run `python -m http.server 8000` in the project folder and open `http://localhost:8000`.
 
 Three.js is loaded from jsDelivr; no build step is required.
+
+## First-island adventure goals
+
+The Shattered Coast is the first playable destination. Its intended content includes a main-story beacon mystery, optional discoveries, treasure, hostile territory, a shipwreck side activity, and distinct landmarks. Future island updates should add their own local stories, secrets, enemy factions, and traversal challenges rather than simply reskinning the same quests.
 
 ## Multiplayer-ready direction
 
