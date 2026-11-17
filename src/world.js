@@ -17,6 +17,19 @@ export function createWorld(T,scene){
  const beacon=new T.Group();beacon.position.set(0,2,-2);scene.add(beacon);const base=new T.Mesh(new T.CylinderGeometry(1.35,1.7,1.4,8),stone);base.position.y=.7;beacon.add(base);const pillar=new T.Mesh(new T.CylinderGeometry(.5,.8,5,8),stone);pillar.position.y=3.5;beacon.add(pillar);const crystal=new T.Mesh(new T.OctahedronGeometry(1.05),gold);crystal.position.y=6.6;beacon.add(crystal);const glow=new T.PointLight(0xf4cf86,2,18);glow.position.y=6.5;beacon.add(glow);
  const npc=new T.Group();npc.position.set(-5,1.8,-16);scene.add(npc);const npcBody=new T.Mesh(new T.CylinderGeometry(.48,.58,1.45,8),mat(0x426b78));npcBody.position.y=1.05;npc.add(npcBody);const npcHead=new T.Mesh(new T.SphereGeometry(.42,12,10),mat(0xc99570));npcHead.position.y=2.05;npc.add(npcHead);const hat=new T.Mesh(new T.CylinderGeometry(.55,.55,.16,12),mat(0x4c4033));hat.position.y=2.48;npc.add(hat);const marker=new T.Mesh(new T.OctahedronGeometry(.22),gold);marker.position.y=3.1;npc.add(marker);
  const interactables=[{type:"mariner",label:"SPEAK TO THE OLD MARINER",object:npc},{type:"beacon",label:"EXAMINE THE ANCIENT BEACON",object:beacon}];
+ // A half-buried wreck hides an optional cartographer's chart.
+ const wreck=new T.Group();wreck.position.set(17,1.8,-14);wreck.rotation.y=-.55;scene.add(wreck);
+ const hullMat=mat(0x594333),wreckWood=mat(0x806044);
+ const hull=new T.Mesh(new T.BoxGeometry(4.8,1.15,1.8),hullMat);hull.position.y=.65;hull.rotation.z=-.12;hull.castShadow=true;wreck.add(hull);
+ for(let i=0;i<4;i++){const plank=new T.Mesh(new T.BoxGeometry(.16,2.2,.18),wreckWood);plank.position.set(-1.5+i,1.5,0);plank.rotation.z=(i%2?-.35:.25);wreck.add(plank);}
+ const mast=new T.Mesh(new T.CylinderGeometry(.12,.18,4.8,7),wood);mast.position.set(-.4,2.6,.05);mast.rotation.z=.32;wreck.add(mast);
+ const tornSail=new T.Mesh(new T.ConeGeometry(1.25,2.2,3,1,true),new T.MeshStandardMaterial({color:0xc6b99b,side:T.DoubleSide,roughness:1}));tornSail.position.set(.1,3.2,0);tornSail.rotation.z=-.4;wreck.add(tornSail);
+ const chart=new T.Group();chart.position.set(17.8,2.35,-13.1);scene.add(chart);
+ const paper=new T.Mesh(new T.BoxGeometry(.72,.06,.52),mat(0xe5d3a8));paper.rotation.y=.35;chart.add(paper);
+ const chartMark=new T.Mesh(new T.TorusGeometry(.13,.025,5,16),gold);chartMark.rotation.x=Math.PI/2;chartMark.position.y=.05;chart.add(chartMark);
+ const chartGlow=new T.PointLight(0xe7c77f,.55,4);chartGlow.position.y=.5;chart.add(chartGlow);
+ const lostChart={type:"chart",label:"RECOVER THE LOST SEA CHART",object:chart,collected:false};
+ interactables.push(lostChart);
  const wisps=[];const wispSpots=[[-15,-9],[15,-7],[-9,14],[10,13],[1,8],[-19,0],[18,1]];
  for(let i=0;i<5;i++){const spot=wispSpots[Math.floor(Math.random()*wispSpots.length)];const g=new T.Group();g.position.set(spot[0],2.3,spot[1]);const orb=new T.Mesh(new T.IcosahedronGeometry(.28,1),new T.MeshBasicMaterial({color:0x8ff7ec,transparent:true,opacity:.9}));g.add(orb);const halo=new T.Mesh(new T.TorusGeometry(.48,.025,6,24),new T.MeshBasicMaterial({color:0x8ff7ec,transparent:true,opacity:.65}));halo.rotation.x=Math.PI/2;g.add(halo);const glow=new T.PointLight(0x70e9df,.75,5);g.add(glow);scene.add(g);const item={type:"wisp",label:"COLLECT TIDE WISP",object:g,phase:i*1.3,collected:false};wisps.push(item);interactables.push(item);}
  // Treasure chests are placed at random points and respawn after being found.
@@ -43,5 +56,6 @@ export function createWorld(T,scene){
  for(const e of enemies){if(!e.alive)continue;e.phase+=dt;e.cooldown-=dt;const d=e.group.position.distanceTo(playerPos);if(d<12){const dir=playerPos.clone().sub(e.group.position);dir.y=0;if(d>2.1)e.group.position.addScaledVector(dir.normalize(),dt*1.5);else if(e.cooldown<=0){e.cooldown=1.8;onDamage(7);burst(e.group.position.clone().add(new T.Vector3(0,1,0)),0xff886d,8,1.5);}}else{const offset=e.group.position.clone().sub(e.home);if(offset.length()>2)e.group.position.addScaledVector(offset.normalize(),-dt);e.group.position.y=1.9+Math.sin(e.phase*2)*.025;}}
  for(let i=effects.length-1;i>=0;i--){const e=effects[i];e.life-=dt;if(e.expand){const p=1-e.life/e.max;e.mesh.scale.setScalar(1+p*7);e.mesh.material.opacity=Math.max(0,e.life/e.max);}else if(e.scale){e.mesh.scale.multiplyScalar(1+dt*2);e.mesh.children[0].material.opacity=Math.max(0,e.life/e.max);}else{e.mesh.position.addScaledVector(e.v,dt);e.v.y-=dt*5;if(e.mesh.material?.opacity!==undefined)e.mesh.material.opacity=Math.max(0,e.life/e.max);}if(e.life<=0){scene.remove(e.mesh);e.mesh.traverse?.(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});effects.splice(i,1);}}
  }
- return {interactables,update,attack,tidePulse,galeVfx,openChest,collectWisp};
+ function collectChart(item){if(!item||item.collected)return false;item.collected=true;item.object.visible=false;burst(item.object.position.clone(),0xffd98b,26,3.2);return true;}
+ return {interactables,update,attack,tidePulse,galeVfx,openChest,collectWisp,collectChart};
 }
