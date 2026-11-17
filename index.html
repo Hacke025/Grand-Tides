@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grand Tides</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar"><a class="brand" href="./">GRAND <span>TIDES</span></a><span class="top-note">A pirate roguelike adventure</span></header>
+    <section class="hero">
+      <div class="eyebrow">THE OPEN SEA IS CALLING</div>
+      <h1>Make your name among the <em>Grand Tides.</em></h1>
+      <p>Explore strange islands, face unexpected challenges, uncover treasure, and build your legend one voyage at a time.</p>
+      <button id="begin-button" class="primary-button">Begin your voyage →</button>
+      <div class="hero-meta">SOLO ADVENTURE · ROGUELIKE VOYAGES · LOCAL SAVES</div>
+    </section>
+    <section id="game" class="game-panel" hidden>
+      <div class="panel-heading"><div><div class="eyebrow">CAPTAIN'S LOG</div><h2>Your voyage</h2></div><button id="reset-button" class="quiet-button">New voyage</button></div>
+      <div class="stats">
+        <div><small>LEVEL</small><strong id="level">1</strong></div>
+        <div><small>HEALTH</small><strong id="health">30 / 30</strong></div>
+        <div><small>GOLD</small><strong id="gold">0</strong></div>
+        <div><small>RENOWN</small><strong id="renown">0</strong></div>
+      </div>
+      <div class="voyage-layout">
+        <section class="island-card"><div class="eyebrow">CHART YOUR COURSE</div><h3 id="island-name">Driftwood Harbor</h3><p id="island-description">A quiet port where new captains begin.</p><div class="island-art">⚓</div><button id="explore-button" class="primary-button">Explore island →</button></section>
+        <section class="log-card"><div class="eyebrow">SHIP'S JOURNAL</div><div id="journal" class="journal">Your story begins at Driftwood Harbor.</div></section>
+      </div>
+      <section id="encounter" class="encounter" hidden><div class="eyebrow">ENCOUNTER</div><h3 id="encounter-title"></h3><p id="encounter-text"></p><div id="encounter-actions" class="actions"></div></section>
+    </section>
+    <footer>GRAND TIDES · EVERY VOYAGE WRITES A NEW STORY</footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
