@@ -45,6 +45,10 @@ Three.js is loaded from jsDelivr; no build step is required.
 
 The Shattered Coast is the first playable destination. Its intended content includes a main-story beacon mystery, optional discoveries, treasure, hostile territory, a shipwreck side activity, and distinct landmarks. Future island updates should add their own local stories, secrets, enemy factions, and traversal challenges rather than simply reskinning the same quests.
 
+## Visual and animation pass
+
+The renderer now uses ACES filmic tone mapping, soft PCF shadows, atmospheric fog, a custom gradient sky dome, a visible sun and glow, drifting cloud banks, and distant island silhouettes. The Shattered Coast settlement has more detailed houses with windows, trim, chimneys, and porches. Player idle/movement/attack motion and NPC/raider idle and movement animation have also been expanded.
+
 ## Multiplayer-ready direction
 
 The current prototype is intentionally single-player. Its systems are separated into world, player, quest, and UI modules. A later multiplayer phase can add Supabase Auth and Postgres for accounts and saved character data, with Supabase Realtime for presence and lightweight world events. A dedicated authoritative game server may be needed for synchronized movement and gameplay validation; browser clients should not be trusted to decide important shared game state.
