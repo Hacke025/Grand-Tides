@@ -10,7 +10,8 @@ function showDialogue(speaker,role,lines,done){dialogueOpen=true;ui.showDialogue
 function advanceDialogue(){if(ui.nextDialogue())dialogueOpen=false;}ui.onDialogueNext=advanceDialogue;
 function interact(t){if(t.type==="mariner"||t.type==="beacon"){const result=t.type==="mariner"?quests.talkToMariner():quests.inspectBeacon();showDialogue(t.type==="mariner"?"Old Mariner":"Ancient Beacon",t.type==="mariner"?"KEEPER OF THE HARBOR":"A STRANGE MECHANISM",result.lines,()=>quests.finishDialogue(result));}
 else if(t.type==="chest"){const amount=world.openChest(t);if(amount){coins+=amount;ui.setStats({coins,renown,health});ui.toast("TREASURE FOUND  ·  +"+amount+" COINS");}}
-else if(t.type==="wisp"&&world.collectWisp(t)){coins+=8;renown+=5;ui.setStats({coins,renown,health});ui.toast("TIDE WISP FOUND · +8 COINS · +5 RENOWN");}}
+else if(t.type==="wisp"&&world.collectWisp(t)){coins+=8;renown+=5;ui.setStats({coins,renown,health});ui.toast("TIDE WISP FOUND · +8 COINS · +5 RENOWN");}
+else if(t.type==="chart"&&world.collectChart(t)){coins+=65;renown+=15;ui.setStats({coins,renown,health});ui.toast("LOST SEA CHART RECOVERED · +65 COINS · +15 RENOWN");}}
 function updateNearby(){const p=player.position();let nearest=null,dist=3.5;for(const t of world.interactables){if(!t.object.visible)continue;const d=p.distanceTo(t.object.position);if(d<dist){nearest=t;dist=d;}}nearby=nearest;ui.setInteraction(nearest?(nearest.type==="chest"?"OPEN TREASURE CHEST":nearest.label):null);}
 function rewardDefeat(){coins+=12;renown+=2;ui.setStats({coins,renown,health});ui.toast("RIVAL DEFEATED  ·  +12 COINS");}
 function lightAttack(){if(!started||dialogueOpen||lightCD>0)return;lightCD=.38;player.swing();const hit=world.attack(player.position(),player.forward(),10,3.3);if(hit){ui.damageNumber(hit.damage);if(hit.defeated)rewardDefeat();}}
